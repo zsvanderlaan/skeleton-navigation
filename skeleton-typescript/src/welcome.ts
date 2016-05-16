@@ -1,6 +1,23 @@
 //import {computedFrom} from 'aurelia-framework';
 
+import {inject} from "aurelia-dependency-injection";
+import {Factory} from "aurelia-dependency-injection";
+
+import {ApiRequestEventConfiguration, ApiRequestEvent} from "./apiRequestEvent";
+import {User} from "./user";
+
+@inject(Factory.of(ApiRequestEvent))
 export class Welcome {
+
+  constructor(
+    private _apiRequestEventFactory: (configuration: ApiRequestEventConfiguration) => ApiRequestEvent
+  ) {
+    let configuration = new ApiRequestEventConfiguration(User);
+
+    // error thrown here
+    let event = this._apiRequestEventFactory(configuration);
+  }
+
   heading = 'Welcome to the Aurelia Navigation App!';
   firstName = 'John';
   lastName = 'Doe';
@@ -32,3 +49,4 @@ export class UpperValueConverter {
     return value && value.toUpperCase();
   }
 }
+
