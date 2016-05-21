@@ -1,6 +1,16 @@
 //import {computedFrom} from 'aurelia-framework';
+import {autoinject} from "aurelia-dependency-injection";
+import {TestService} from "./example/testService";
 
+@autoinject()
 export class Welcome {
+
+  constructor(
+    testService: TestService
+  ) {
+
+  }
+
   heading = 'Welcome to the Aurelia Navigation App!';
   firstName = 'John';
   lastName = 'Doe';
