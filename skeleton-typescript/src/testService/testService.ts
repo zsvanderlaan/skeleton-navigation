@@ -1,9 +1,16 @@
+import {inject} from "aurelia-dependency-injection";
 import {autoinject} from "aurelia-dependency-injection";
-import {TestServiceConfiguration} from "./testServiceConfiguration";
-import {TestServiceDependencies} from "./testServiceDependencies";
-import {ChildConfiguration} from "./childConfiguration";
+export class TestServiceConfiguration { }
 
 @autoinject()
+export class TestServiceDependencies {
+
+  constructor(
+
+  ) { }
+}
+
+@inject(TestServiceDependencies)
 export class TestService {
 
   constructor(
@@ -12,8 +19,5 @@ export class TestService {
   ) {
     console.log(_dependencies);
     console.log(_configuration);
-    let configuration = new ChildConfiguration('Foo');
-    let child = this._dependencies.childFactory(configuration);
-    console.log(child);
   }
 }
