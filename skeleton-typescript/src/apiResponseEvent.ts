@@ -24,4 +24,12 @@ export class ApiResponseEvent {
     private _dependencies: ApiResponseEventDependencies
     , private _configuration: ApiResponseEventConfiguration
   ) { }
+
+  public isResponseFor(responseType: Function | string) {
+    return (responseType === this._configuration.responseType);
+  }
+
+  public getResponseData() {
+    return this._configuration.data;
+  }
 }

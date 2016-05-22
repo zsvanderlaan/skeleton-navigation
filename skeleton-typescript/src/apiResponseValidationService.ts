@@ -27,7 +27,13 @@ import {Factory} from "aurelia-dependency-injection";
  *
  */
 
-export class ApiResponseValidationServiceConfiguration { }
+export class ApiResponseValidationServiceConfiguration {
+
+  constructor(
+    public eventType: Function | string
+  ) { }
+
+}
 
 @inject( // For the time being we need to use @inject because of the factories
   EventAggregator
@@ -77,28 +83,26 @@ export abstract class ApiResponseValidationService {
     this.isActive = false;
   }
 
-  protected abstract getEventType(): Function | string
-
   protected isActive: boolean = false;                        // default to inActive
   protected activateOnConstruction: boolean = true;           // default to autoActivate
 
   //@handleEvent(ApiResponseEvent)
   protected onApiResponseEvent(event: ApiResponseEvent) {
     // todo: Improve me by making subscribe be to a descriptive enough channel that this test is not needed
-    if ( event.responseType === this.getEventType() ) { this.validate(event.data); }
+    if (event.isResponseFor(this._configuration.eventType)) { this.validate(event.getResponseData()); }
   }
 
   protected validate(data: any): void {
-    this.handleValidationResult(this._dependencies._apiResponseValidator.validate(this.getEventType(), data));
+    this.handleValidationResult(this._dependencies._apiResponseValidator.validate(this._configuration.eventType, data));
   }
   
   protected handleValidationResult(validationResult: ValidationResult) {
 
-    if (validationResult.isValid) {
-      this.handleValidationSuccess(this._dependencies._apiResponseValidationSuccessEventFactory.get(this.getEventType(), validationResult.data));
+    if (validationResult.isValid()) {
+      this.handleValidationSuccess(this._dependencies._apiResponseValidationSuccessEventFactory(new ApiResponseValidationSuccessEventConfiguration(this._configuration.eventType, validationResult.getValidatedData())));
     }
     else {
-      this.handleValidationFailure(this._dependencies._apiResponseValidationErrorEventFactory.get(this.getEventType(), validationResult.data, validationResult.validationErrors));
+      this.handleValidationFailure(this._dependencies._apiResponseValidationErrorEventFactory(new ApiResponseValidationErrorEventConfiguration(this._configuration.eventType, validationResult.getValidatedData(), validationResult.getValidationErrors())));
     }
   }
 

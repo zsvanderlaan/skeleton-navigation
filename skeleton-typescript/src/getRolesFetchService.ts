@@ -45,8 +45,8 @@ export class GetRolesFetchServiceDependencies {
 export class GetRolesFetchService extends ApiFetchService{
 
   constructor(
-    private _dependencies: GetRolesFetchServiceDependencies
-    , private _configuration: GetRolesFetchServiceConfiguration) {
+    _dependencies: GetRolesFetchServiceDependencies
+    , _configuration: GetRolesFetchServiceConfiguration) {
 
     super(_dependencies, _configuration);
   }

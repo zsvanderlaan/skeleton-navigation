@@ -14,7 +14,12 @@ import {ApiResponseValidator} from "./apiResponseValidator";
 import {EventAggregator} from "aurelia-event-aggregator";
 import {Factory} from "aurelia-dependency-injection";
 
-export class GetRolesResponseValidationServiceConfiguration { }
+export class GetRolesResponseValidationServiceConfiguration {
+
+  constructor(
+    public eventType: Function | string
+  ) { }
+}
 
 @inject( // For the time being we need to use @inject because of the factories
   EventAggregator
@@ -37,8 +42,8 @@ export class GetRolesResponseValidationServiceDependencies {
 export class GetRolesResponseValidationService extends ApiResponseValidationService {
 
   constructor(
-    private _dependencies: GetRolesResponseValidationServiceDependencies
-    , private _configuration: GetRolesResponseValidationServiceConfiguration
+    _dependencies: GetRolesResponseValidationServiceDependencies
+    , _configuration: GetRolesResponseValidationServiceConfiguration
   ) {
     super(_dependencies, _configuration);
   }
