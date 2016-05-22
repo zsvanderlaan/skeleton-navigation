@@ -2,9 +2,9 @@ module.exports = {
   "bundles": {
     "dist/app-build": {
       "includes": [
-        "[**/*.js]",
-        "**/*.html!text",
-        "**/*.css!text"
+        "[*.js]",
+        "*.html!text",
+        "*.css!text"
       ],
       "options": {
         "inject": true,
@@ -23,13 +23,13 @@ module.exports = {
         "aurelia-templating-binding",
         "aurelia-polyfills",
         "aurelia-templating-resources",
+        "aurelia-event-aggregator",
         "aurelia-templating-router",
         "aurelia-loader-default",
         "aurelia-history-browser",
         "aurelia-logging-console",
         "bootstrap",
-        "bootstrap/css/bootstrap.css!text",
-        "jquery"
+        "bootstrap/css/bootstrap.css!text"
       ],
       "options": {
         "inject": true,

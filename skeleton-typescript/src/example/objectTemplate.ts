@@ -1,11 +1,13 @@
 import {inject} from "aurelia-dependency-injection";
 import {autoinject} from "aurelia-dependency-injection";
-import {autoconfigure} from "./autoconfigure";
+import {autoconfigure} from "../coreTools";
+
 
 // Configuration classes must not contain dependencies
 // Because of this, configuration classes are the only classes you may use new() with
 export class ClassConfiguration {
 
+  // Configuration properties must be public to be accessed by Class
   constructor(
     public name: string
   ) {
@@ -18,12 +20,13 @@ export class ClassConfiguration {
 @autoinject()
 export class ClassDependencies {
 
-  // Always include the configuration object in the dependencies
-  // This allows us to inject a default configuration
+  // Dependencies must be public to be accessed by Class
   constructor(
-    public _defaultConfiguration: ClassConfiguration
+    public _fooDependency: FooDependency
   ) { }
 }
+
+export class FooDependency { }
 
 // A class must only ever have a dependency object injected
 @inject(ClassDependencies)
