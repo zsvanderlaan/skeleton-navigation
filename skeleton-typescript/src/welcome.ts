@@ -3,15 +3,14 @@ import {autoinject} from "aurelia-dependency-injection";
 import {inject} from "aurelia-dependency-injection";
 import {TestService} from "./testService/testService";
 
-export class WelcomeConfiguration { }
-
 @autoinject()
 export class WelcomeDependencies {
 
   constructor(
-    private _testService: TestService
+    public _testService: TestService
   ) {
-
+    debugger;
+    console.log(this._testService);
   }
 }
 
@@ -24,8 +23,10 @@ export class Welcome {
 
   constructor(
     private _dependencies: WelcomeDependencies
-    , private _configuration: WelcomeConfiguration
-  ) { }
+  ) {
+    debugger;
+    console.log(this._dependencies);
+  }
 
   
   //Getters can't be directly observed, so they must be dirty checked.

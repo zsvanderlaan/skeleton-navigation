@@ -1,6 +1,11 @@
 import {inject} from "aurelia-dependency-injection";
 import {autoinject} from "aurelia-dependency-injection";
-export class TestServiceConfiguration { }
+
+export class TestServiceConfiguration {
+
+  public isWorking: boolean = true;
+  public isOtherText: string = 'true'
+}
 
 @autoinject()
 export class TestServiceDependencies {
@@ -10,6 +15,7 @@ export class TestServiceDependencies {
   ) { }
 }
 
+
 @inject(TestServiceDependencies)
 export class TestService {
 
@@ -17,7 +23,7 @@ export class TestService {
     public _dependencies: TestServiceDependencies
     , public _configuration: TestServiceConfiguration
   ) {
-    console.log(_dependencies);
-    console.log(_configuration);
+    console.log(this._dependencies);
+    console.log(this._configuration);
   }
 }
