@@ -100,6 +100,16 @@ export function log(target: Function, key: string, descriptor: any) {
   return descriptor;
 }
 
+function validate<T>(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<T>) {
+  let set = descriptor.set;
+  descriptor.set = function (value: T) {
+    let type = Reflect.getMetadata("design:type", target, propertyKey);
+    if (!(value instanceof type)) {
+      throw new TypeError("Invalid type.");
+    }
+  }
+}
+
 // export function clone(): any {
 //   var cloneObj = new (<any>this.constructor)(); // line fixed
 //   for (var attribut in this) {
