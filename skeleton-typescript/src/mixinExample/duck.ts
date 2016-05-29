@@ -11,7 +11,7 @@ export interface IDuck extends Swimmer, Walker, Talker {
     (_dependencies: DuckDependencies, _configuration: DuckConfiguration): void;
 }
 
-export let IDuck = compose([Swimmer, Walker, Talker]) as IDuck;
+export let IDuck = compose(Swimmer, Walker, Talker) as IDuck;
 
 export class DuckConfiguration {
   sound:string = 'quack';
