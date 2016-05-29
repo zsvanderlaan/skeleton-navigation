@@ -9,8 +9,7 @@ export class WelcomeDependencies {
   constructor(
     public _testService: TestService
   ) {
-    debugger;
-    console.log(this._testService);
+    console.log('test service:', this._testService);
   }
 }
 
@@ -24,8 +23,6 @@ export class Welcome {
   constructor(
     private _dependencies: WelcomeDependencies
   ) {
-    debugger;
-    console.log(this._dependencies);
   }
 
   
