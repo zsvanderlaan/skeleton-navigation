@@ -9,6 +9,17 @@ const hasOwnProperty = Object.prototype.hasOwnProperty;
 // }
 //
 
+/**
+ * JavaScript Rename Function
+ * @author Nate Ferrero
+ * @license Public Domain
+ * @date Apr 5th, 2014
+ */
+export function renameFunction(fn, name) {
+  return (new Function("return function (call) { return function " + name +
+    " () { return call(this, arguments) }; };")())(Function.apply.bind(fn));
+}
+
 export function mapImplementsContract<K, V>(map: Map<K, V>, contract: Map<K, V>): boolean {
 
   if (!map || !contract) {
@@ -68,37 +79,15 @@ function extend<K, V>(target: Map<K, V>, options: Map<K, V>): Map<K, V> {
   return target;
 }
 
-export function autoconfigure(potentialTarget?: any): any {
 
-  // todo: implement me
-  // implementation goal for this function:
-  // extend this.configuration with new ClassConfiguration()
-  //
-  // We can accomplish this by using typescript reflection, as is done in other aurelia decorators
-}
 
-export function log(target: Function, key: string, descriptor: any) {
 
-  // save a reference to the original method
-  // this way we keep the values currently in the
-  // descriptor and don't overwrite what another
-  // decorator might have done to the descriptor.
-  var originalMethod = descriptor.value;
 
-  //editing the descriptor/value parameter
-  descriptor.value =  function (...args: any[]) {
-    var a = args.map(a => JSON.stringify(a)).join();
-    // note usage of originalMethod here
-    var result = originalMethod.apply(this, args);
-    var r = JSON.stringify(result);
-    console.log(`Call: ${key}(${a}) => ${r}`);
-    return result;
-  }
 
-  // return edited descriptor as opposed to overwriting
-  // the descriptor by returning a new descriptor
-  return descriptor;
-}
+
+
+
+
 
 // export function clone(): any {
 //   var cloneObj = new (<any>this.constructor)(); // line fixed
