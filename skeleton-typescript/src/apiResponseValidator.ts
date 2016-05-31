@@ -1,8 +1,8 @@
 import {ValidationResult, ValidationResultConfiguration} from "./validationResult";
 import {ValidationError, ValidationErrorConfiguration} from "./validationError";
-import {mapImplementsContract, autoconfigure} from "./coreTools";
 import {inject} from "aurelia-dependency-injection";
 import {Factory} from "aurelia-dependency-injection";
+import {mapImplementsContract} from "./coreTools";
 
 export class ApiResponseValidatorConfiguration { }
 
@@ -18,7 +18,6 @@ export class ApiResponseValidatorDependencies {
   ) { }
 }
 
-@autoconfigure()
 @inject(ApiResponseValidatorDependencies)
 export class ApiResponseValidator {
 

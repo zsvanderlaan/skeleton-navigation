@@ -1,6 +1,5 @@
 import {autoinject} from "aurelia-dependency-injection";
 import {inject} from "aurelia-dependency-injection";
-import {autoconfigure} from "./coreTools";
 
 export class ApiResponseValidationSuccessEventConfiguration {
 
@@ -13,7 +12,6 @@ export class ApiResponseValidationSuccessEventConfiguration {
 @autoinject()
 export class ApiResponseValidationSuccessEventDependencies { }
 
-@autoconfigure()
 @inject(ApiResponseValidationSuccessEventDependencies)
 export class ApiResponseValidationSuccessEvent {
 

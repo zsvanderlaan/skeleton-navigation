@@ -8,7 +8,6 @@ import {
   ApiResponseValidationErrorEvent,
   ApiResponseValidationErrorEventConfiguration
 } from "./apiResponseValidationErrorEvent";
-import {autoconfigure} from "./coreTools";
 import {EventAggregator} from "aurelia-event-aggregator";
 import {ApiResponseValidator} from "./apiResponseValidator";
 import {inject} from "aurelia-dependency-injection";
@@ -52,7 +51,6 @@ export class ApiResponseValidationServiceDependencies {
 }
 
 // todo: make me not abstract
-@autoconfigure()
 @inject(ApiResponseValidationServiceDependencies)
 export abstract class ApiResponseValidationService {
 

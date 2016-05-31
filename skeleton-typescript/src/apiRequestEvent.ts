@@ -1,6 +1,5 @@
 import {autoinject} from "aurelia-dependency-injection";
 import {inject} from "aurelia-dependency-injection";
-import {autoconfigure} from "./coreTools";
 
 export class ApiRequestEventConfiguration {
 
@@ -12,7 +11,7 @@ export class ApiRequestEventConfiguration {
 @autoinject()
 export class ApiRequestEventDependencies { }
 
-@autoconfigure()
+
 @inject(ApiRequestEventDependencies)
 export class ApiRequestEvent {
 

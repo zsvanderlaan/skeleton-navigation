@@ -1,10 +1,10 @@
-import {compose} from "./class-composer";
 import {Swimmer} from "./swimmer";
 import {Walker} from "./walker";
 import {Talker} from "./talker";
 import {autoinject} from "aurelia-dependency-injection";
 import {inject} from "aurelia-dependency-injection";
 import {HttpClient} from "aurelia-fetch-client";
+import {compose} from "../coreTools";
 
 export interface IDuck extends Swimmer, Walker, Talker {
     new(_dependencies: DuckDependencies, _configuration: DuckConfiguration): IDuck;

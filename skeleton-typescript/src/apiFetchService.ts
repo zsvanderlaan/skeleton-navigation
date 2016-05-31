@@ -3,10 +3,11 @@ import {ApiResponseValidationService} from "./apiResponseValidationService";
 import {EventAggregator} from "aurelia-event-aggregator";
 import {HttpClient} from "aurelia-fetch-client";
 import {inject} from "aurelia-dependency-injection";
-import {autoconfigure} from "./coreTools";
 import {ApiResponseEvent, ApiResponseEventConfiguration} from "./apiResponseEvent";
 import {Factory} from "aurelia-dependency-injection";
 import {ApiResponseErrorEvent, ApiResponseErrorEventConfiguration} from "./apiResponseErrorEvent";
+import {compose} from "./coreTools";
+import {Activatable, IActivatable} from "./infrastructure/mixins/activatable";
 
 /*
  *   ApiFetchService
@@ -23,17 +24,29 @@ import {ApiResponseErrorEvent, ApiResponseErrorEventConfiguration} from "./apiRe
 
 export class ApiFetchServiceConfiguration {
 
+  public requestMethod: string = 'GET';
+
+  public activateOnConstruction: boolean = true;
+  public isActive: boolean = false;
+
+  public hasBody: boolean = false;
+  public body: Object = Object.create(Object);
+
+  // todo: create map of route to responseType so that route does not have to be provided as a param
+  public apiRoute: Request | string;
+
+  public disposables: Array<any> = [];
+
   constructor(
-    public activateOnConstruction: boolean
-    , public hasBody: boolean
+    public responseType: Function | string
   ) {
-    this.activateOnConstruction = (undefined !== this.activateOnConstruction) ? this.activateOnConstruction : true;
-    this.hasBody = (undefined !== this.hasBody) ? this.hasBody : true;
+
   }
 }
 
 @inject(
-  EventAggregator
+  HttpClient
+  , EventAggregator
   , ApiResponseValidationService
   , Factory.of(ApiResponseEvent)
   , Factory.of(ApiResponseErrorEvent)
@@ -48,19 +61,29 @@ export class ApiFetchServiceDependencies {
   ) { }
 }
 
+export interface IApiFetchService extends Activatable, ApiFetchServiceConfiguration, ApiFetchServiceDependencies
+{
+  new(_dependencies: ApiFetchServiceDependencies, _configuration: ApiFetchServiceConfiguration): IApiFetchService;
+  (_dependencies: ApiFetchServiceDependencies, _configuration: ApiFetchServiceConfiguration): void;
+}
 
-@autoconfigure()
+export let IApiFetchService = compose(
+  Activatable
+  , ApiFetchServiceConfiguration
+  , ApiFetchServiceDependencies
+) as IApiFetchService;
+
+
 // todo: make me not abstract. inherit via decorators so that we control the implementation
 @inject(ApiFetchServiceDependencies)
-export abstract class ApiFetchService {
+export class ApiFetchService extends IApiFetchService {
 
   constructor(
-    private _injectedParams: ApiFetchServiceDependencies
-    , private _configuration: ApiFetchServiceConfiguration
+    _dependencies: ApiFetchServiceDependencies
+    , _configuration: ApiFetchServiceConfiguration
   ) {
-
-    // todo: make this a feature of autoconfigure()
-    if (this._configuration.activateOnConstruction) { this.activate(); }
+    debugger;
+    super(_dependencies, _configuration);
   }
 
   //@subscribeEventHandlers()
@@ -70,7 +93,7 @@ export abstract class ApiFetchService {
 
     this.createApiRequestEventSubscription();
 
-    this.isActive = true;
+    super.activate()
   }
 
   //@unsubscribeEventHandlers()
@@ -82,37 +105,22 @@ export abstract class ApiFetchService {
     this.isActive = false;
   }
 
-  protected abstract getApiRoute(): Request | string
-  protected abstract getRequestMethod(): string
-  protected abstract getEventType(): Function | string
-
-  protected isActive: boolean = false;                        // default to inActive
-  protected hasBody: boolean = true;                          // default to have a request body
-
-  protected getBody(): Object {
-    return Object.create(Object);
-  }
-
-  protected renderBody(): string {
+  protected encodeBody(): string {
 
     if (false === this.hasBody) { return ''; }
-    else { return this.encodeBody(this.getBody()); }
-  }
-
-  protected encodeBody(body: Object): string {
-    return JSON.stringify(body);
+    else { return JSON.stringify(this.body); }
   }
 
   //@withValidationInterceptor(this.requestType)
   protected fetch() {
-    this._injectedParams._http.fetch(this.getApiRoute(), {
+    this._http.fetch(this.apiRoute, {
         'credentials': 'same-origin',
-        'method': this.getRequestMethod(),
+        'method': this.requestMethod,
         'headers': {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        'body': this.renderBody()
+        'body': this.encodeBody()
       })
       .then((response) => { this.handleResponse(response); })
       .catch((error) => { this.handleError(error); });
@@ -123,7 +131,7 @@ export abstract class ApiFetchService {
     if (response.ok) {
       response.json()
         .then((data) => {
-          this._injectedParams._eventAggregator.publish(this._injectedParams._apiResponseEventFactory(new ApiResponseEventConfiguration(this.getEventType(), data)))
+          this._eventAggregator.publish(this._apiResponseEventFactory(new ApiResponseEventConfiguration(this.responseType, data)))
         });
     }
     else {
@@ -132,13 +140,13 @@ export abstract class ApiFetchService {
   }
 
   protected handleError(error) {
-    this._injectedParams._eventAggregator.publish(this._injectedParams._apiResponseErrorEventFactory(new ApiResponseErrorEventConfiguration(this.getEventType(), error)));
+    this._eventAggregator.publish(this._apiResponseErrorEventFactory(new ApiResponseErrorEventConfiguration(this.responseType, error)));
   }
 
   //@handleEvent(ApiRequestEvent)
   protected onApiRequestEvent(event: ApiRequestEvent) {
     // todo: Improve me by making subscribe be to a descriptive enough channel that this test is not needed
-    if ( event.requestType === this.getEventType() ) { this.fetch(); }
+    if ( event.requestType === this.responseType ) { this.fetch(); }
   }
 
   protected createApiRequestEventSubscription() {
@@ -146,12 +154,10 @@ export abstract class ApiFetchService {
     let event: string | Function = ApiRequestEvent;
     let handler = (event: ApiRequestEvent) => { this.onApiRequestEvent(event); };
 
-    this._disposables.push(this._injectedParams._eventAggregator.subscribe(event, handler));
+    this.disposables.push(this._eventAggregator.subscribe(event, handler));
   }
 
   protected dispose() {
-    this._disposables.forEach((disposable) => { disposable.dispose(); });
+    this.disposables.forEach((disposable) => { disposable.dispose(); });
   }
-
-  private _disposables: Array<any> = [];
 }

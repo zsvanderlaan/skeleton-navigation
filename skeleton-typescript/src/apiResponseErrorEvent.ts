@@ -1,6 +1,5 @@
 import {autoinject} from "aurelia-dependency-injection";
 import {inject} from "aurelia-dependency-injection";
-import {autoconfigure} from "./coreTools";
 
 export class ApiResponseErrorEventConfiguration {
   constructor(
@@ -14,7 +13,6 @@ export class ApiResponseErrorEventConfiguration {
 @autoinject()
 export class ApiResponseErrorEventDependencies { }
 
-@autoconfigure()
 @inject(ApiResponseErrorEventDependencies)
 export class ApiResponseErrorEvent {
 

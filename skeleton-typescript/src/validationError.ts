@@ -1,6 +1,5 @@
 import {inject} from "aurelia-dependency-injection";
 import {autoinject} from "aurelia-dependency-injection";
-import {autoconfigure} from "./coreTools";
 
 export class ValidationErrorConfiguration {
 
@@ -14,7 +13,6 @@ export class ValidationErrorConfiguration {
 @autoinject()
 export class ValidationErrorDependencies { }
 
-@autoconfigure()
 @inject(ValidationErrorDependencies)
 export class ValidationError {
 

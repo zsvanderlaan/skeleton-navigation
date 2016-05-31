@@ -1,6 +1,5 @@
 import {ValidationError} from "./validationError";
 import {inject} from "aurelia-dependency-injection";
-import {autoconfigure} from "./coreTools";
 import {autoinject} from "aurelia-dependency-injection";
 
 export class ApiResponseValidationErrorEventConfiguration {
@@ -15,7 +14,6 @@ export class ApiResponseValidationErrorEventConfiguration {
 @autoinject()
 export class ApiResponseValidationErrorEventDependencies { }
 
-@autoconfigure()
 @inject(ApiResponseValidationErrorEventDependencies)
 export class ApiResponseValidationErrorEvent {
 
