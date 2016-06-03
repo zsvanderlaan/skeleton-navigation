@@ -12,4 +12,4 @@ export interface IViewModel extends Activatable, Hideable {
     onDeactivate();
 }
 
-export let IComposedViewModel = compose(Activatable, Hideable) as IViewModelStatic;
+export let IViewModel = compose(Activatable, Hideable) as IViewModelStatic;

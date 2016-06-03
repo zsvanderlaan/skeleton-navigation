@@ -1,6 +1,6 @@
-import {IComposedViewModel, IViewModel} from './IViewModel';
+import {IViewModel} from './IViewModel';
 
-export class ViewModel extends IComposedViewModel implements IViewModel {
+export class ViewModel extends IViewModel implements IViewModel {
 
     constructor() { super(); }
 

@@ -13,4 +13,4 @@ export interface IDropableViewModel extends ViewModel, Dropable {
     onPickup()
 }
 
-export let IComposedDropableViewModel = compose(ViewModel, Dropable) as IDropableViewModelStatic;
+export let IDropableViewModel = compose(ViewModel, Dropable) as IDropableViewModelStatic;

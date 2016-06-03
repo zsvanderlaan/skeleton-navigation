@@ -1,6 +1,6 @@
-import {IComposedDropableViewModel, IDropableViewModel} from './IDropableViewModel';
+import {IDropableViewModel} from './IDropableViewModel';
 
-export class DropableViewModel extends IComposedDropableViewModel implements IDropableViewModel {
+export class DropableViewModel extends IDropableViewModel implements IDropableViewModel {
 
     constructor( ) { super(); }
 
