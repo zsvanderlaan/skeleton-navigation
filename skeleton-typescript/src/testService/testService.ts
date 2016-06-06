@@ -1,8 +1,7 @@
 import {inject} from "aurelia-dependency-injection";
-import {autoinject} from "aurelia-dependency-injection";
-import {ApiFetchService, ApiFetchServiceConfiguration} from "../apiFetchService";
 import {Factory} from "aurelia-dependency-injection";
-import {Roles} from "../roles";
+import {ApiFetchService} from "../services/apiFetchService/apiFetchService";
+import {ApiFetchServiceConfiguration} from "../services/apiFetchService/apiFetchServiceConfiguration";
 
 export class TestServiceConfiguration {
 
@@ -18,8 +17,8 @@ export class TestServiceDependencies {
   constructor(
     apiFetchServiceFactory: (configuration: ApiFetchServiceConfiguration) => ApiFetchService
   ) {
+    debugger;
     let configuration = undefined;
-    //let configuration = new ApiFetchServiceConfiguration(Roles);
     this.apiFetchService = apiFetchServiceFactory(configuration);
   }
 }

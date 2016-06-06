@@ -9,86 +9,6 @@ const hasOwnProperty = Object.prototype.hasOwnProperty;
 // }
 //
 
-/**
- * Copy properties of source object to target object excluding constructor.
- * If a property with the same exists on the target it is NOT overwritten.
- *
- * @param target
- * @param source
- */
-export function extend(target:any, source:any) {
-  Object.getOwnPropertyNames(source).forEach(name => {
-    if (name !== "constructor" && !target.hasOwnProperty(name)) {
-      Object.defineProperty(target, name,
-        Object.getOwnPropertyDescriptor(source, name));
-    }
-  });
-}
-
-
-/**
- * Create a constructor function for a class implementing the given mixins.
- *
- * @param mixins array of classes to be mixed together. The constructor of those classes will receive the options given
- *               to the constructor of the composed object
- * @returns {{new(any): {}}} a constructor function
- */
-export function compose(...mixins: Array<Function>): (_dependencies: any, _configuration: any) => any {
-
-  debugger;
-
-  // our constructor function that will be called every time a new composed object is created
-  var composedClassConstructor = function (_dependencies: any, _configuration: any) {
-
-    if (undefined === _dependencies) {
-      _dependencies = Object.create(Object);
-    }
-
-    if (undefined === _configuration) {
-      _configuration = Object.create(Object);
-    }
-
-    // apply the provided dependencies before going any further, as our object may depend on them
-    extend(this, _dependencies);
-
-    // Apply the default values of any configuration mixins to the configuration parameter
-    mixins
-      .filter(function (mixin) {
-        return mixin.name.endsWith('Configuration');
-      })
-      .forEach(function (mixin) {
-        mixin.call(_configuration);
-      });
-
-    // apply the computed configuration before going any further, as our object may depend on it
-    extend(this, _configuration);
-
-    // call the constructor function of all the mixins
-    mixins.forEach(function (mixin) {
-      // we already applied dependencies and configuration
-      if (
-        (mixin.name.endsWith('Dependencies'))
-        || (mixin.name.endsWith('Configuration'))
-      ) {
-        return;
-      }
-      else {
-        mixin.call(this, _dependencies, _configuration);
-      }
-    }, this);
-  };
-
-  // add all mixins properties and methods to the constructor prototype for all
-  // created objects to have them
-  mixins.forEach(function (mixin) {
-    extend(composedClassConstructor.prototype, mixin.prototype);
-  });
-
-  return composedClassConstructor;
-}
-
-
-
 
 /**
  * JavaScript Rename Function
@@ -135,39 +55,6 @@ export function sample(obj, src) {
   }
   return obj;
 }
-
-export function applyConfiguration(target: Object, options: Object) {
-  return extend(target as Map<string, any>, options as Map<string,any>)
-}
-
-// function extend<K, V>(target: Map<K, V>, options: Map<K, V>): Map<K, V> {
-//
-//   if (!target || !options) { return target }
-//
-//   for (const key in options) {
-//     if ( // this may not pick up inherited properties?
-//       (!hasProperty(options, key))
-//       || (!hasProperty(target, key)
-//       || (isInitialized(target, key))
-//       )
-//     ) {
-//       continue;
-//     }
-//
-//     else { target[key] = options[key]; }
-//   }
-//
-//   return target;
-// }
-
-
-
-
-
-
-
-
-
 
 
 // export function clone(): any {

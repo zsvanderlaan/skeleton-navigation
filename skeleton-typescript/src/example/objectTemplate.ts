@@ -1,6 +1,6 @@
 import {inject} from "aurelia-dependency-injection";
 import {autoinject} from "aurelia-dependency-injection";
-import {compose} from "../coreTools";
+import {compose} from "../infrastructure/mixins/Compose";
 
 // Configuration classes must not contain dependencies
 // Because of this, configuration classes are the only classes you may use new() with
@@ -27,22 +27,26 @@ export class ClassDependencies {
 
 export class FooDependency { }
 
-export interface IClass extends
+export interface IBaseClass extends
   ClassConfiguration
   , ClassDependencies {
 
-  new(_dependencies: ClassDependencies, _configuration: ClassConfiguration): IClass;
+  new(_dependencies: ClassDependencies, _configuration: ClassConfiguration): IBaseClass;
   (_dependencies: ClassDependencies, _configuration: ClassConfiguration): void;
 }
 
-export let IClass = compose(
+export let IBaseClass = compose(
   ClassConfiguration
   , ClassDependencies
-) as IClass;
+) as IBaseClass;
+
+export class IClass {
+  // put IClass implementation contract here
+}
 
 // A class must only ever have a dependency object injected
 @inject(ClassDependencies)
-export class Class extends IClass {
+export class Class extends IBaseClass implements IClass {
 
   // A class must only take in two parameters. There literally are no exceptions. None.
   // The first parameter is a dependency object, which is provided through dependency injection
