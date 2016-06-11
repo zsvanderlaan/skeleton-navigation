@@ -21,6 +21,13 @@ export function compose(...mixins: Array<Function>): (dependencies: any, configu
       mixin.call(this, dependencies, configuration);
     }, this);
 
+    // todo: We need to be able to track the compositional depth
+    // if we increment a counter for each super call that must be made as a result of compose
+    // we may be able to determine what the base class is. we should only run activate once
+    // after all super() calls have been made. this is difficult because if a class becomes
+    // extended, it can no longer be the class which invoked activate, even though it may
+    // not always be extended, because the extending class may not be done at the time activate is triggered.
+    // this may be fixable through custom resolvers?
     if (
       (true === (this as any).activateAfterComposition)
       && (undefined !== (this as any).activate)
