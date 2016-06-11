@@ -1,7 +1,7 @@
 import {ActivatableBase} from "./activatableBase";
-import {getImplementationBase} from "../ImplementationFactory";
 import {IActivatableConfiguration} from "./iActivatableConfiguration";
 import {IActivatableDependencies} from "./iActivatableDependencies";
+import {compose} from "../compose";
 
 export interface IActivatableBaseStatic {
   new(dependencies: IActivatableDependencies, configuration: IActivatableConfiguration): IActivatableBase;
@@ -15,4 +15,4 @@ export interface IActivatableBase extends
 
 }
 
-export let IActivatableBase = getImplementationBase<ActivatableBase>() as IActivatableBaseStatic;
+export let IActivatableBase = compose() as IActivatableBaseStatic;

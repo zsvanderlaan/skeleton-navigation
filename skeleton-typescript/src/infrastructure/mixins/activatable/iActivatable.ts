@@ -3,14 +3,14 @@ export interface IActivatable {
   deactivate();
 }
 
-export interface IActivatableImplementer {
+export interface IActivatableImplementation {
   onActivate(): void;
   onDeactivate(): void;
 }
 
-export function isActivatableImplementer<T>(self: T | IActivatableImplementer): self is IActivatableImplementer {
+export function isActivatableImplementation<T>(instanceOfUnknownType: T | IActivatableImplementation): instanceOfUnknownType is IActivatableImplementation {
   return (
-    ((<IActivatableImplementer>self).onActivate !== undefined)
-    && ((<IActivatableImplementer>self).onDeactivate !== undefined)
+    ((<IActivatableImplementation>instanceOfUnknownType).onActivate !== undefined)
+    && ((<IActivatableImplementation>instanceOfUnknownType).onDeactivate !== undefined)
   );
 }

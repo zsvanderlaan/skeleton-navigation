@@ -3,7 +3,7 @@ import {Activatable} from "../activatable/activatable";
 import {IEventSubscriberDependencies} from "./iEventSubscriberDependencies";
 import {IActivatable} from "../activatable/iActivatable";
 import {IDisposable} from "../disposable/iDisposable";
-import {getImplementationComposition} from "../ImplementationFactory";
+import {compose} from "../compose";
 import {IEventSubscriberConfiguration} from "./iEventSubscriberConfiguration";
 import {EventSubscriberBase} from "./eventSubscriberBase";
 
@@ -23,7 +23,7 @@ export interface IEventSubscriberBase extends
 }
 
 
-export let IEventSubscriberBase = getImplementationComposition(
+export let IEventSubscriberBase = compose(
   Activatable
   , Disposable
 ) as IEventSubscriberStatic;

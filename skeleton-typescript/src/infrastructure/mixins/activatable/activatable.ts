@@ -1,14 +1,17 @@
 import {inject} from "aurelia-dependency-injection";
 import {ActivatableConfiguration} from "./activatableConfiguration";
 import {ActivatableDependencies} from "./activatableDependencies";
-import {IActivatable, IActivatableImplementer, isActivatableImplementer} from "./iActivatable";
+import {IActivatable, IActivatableImplementation, isActivatableImplementation} from "./iActivatable";
 import {IActivatableBase} from "./iActivatableBase";
 
 @inject(ActivatableDependencies)
 export class Activatable extends IActivatableBase implements IActivatable {
 
+  isActivatableImplementation: boolean = false;
+
   constructor(dependencies: ActivatableDependencies, configuration: ActivatableConfiguration) {
     super(dependencies, configuration);
+    this.isActivatableImplementation = isActivatableImplementation((this as Activatable | IActivatableImplementation));
     this.observerLocator.getObserver(this, 'isActive').subscribe(this.isActiveChanged);
   }
 
@@ -21,14 +24,13 @@ export class Activatable extends IActivatableBase implements IActivatable {
   }
   
   protected isActiveChanged(newValue: boolean, oldValue: boolean) {
-    let self = this as Activatable | IActivatableImplementer;
-    if (isActivatableImplementer(self)) {
 
+    if (this.isActivatableImplementation) {
       if (true === newValue) {
-        self.onActivate();
+        (this as any).onActivate();
       }
       else {
-        self.onDeactivate();
+        (this as any).onDeactivate();
       }
     }
   }

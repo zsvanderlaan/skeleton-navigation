@@ -1,4 +1,4 @@
-import {getImplementationBase} from "../ImplementationFactory";
+import {compose} from "../compose";
 import {DisposableBase} from "./disposableBase";
 import {IDisposableConfiguration} from "./iDisposableConfiguration";
 import {IDisposableDependencies} from "./iDisposableDependencies";
@@ -15,4 +15,4 @@ export interface IDisposableBase extends
   
 }
 
-export let IDisposableBase = getImplementationBase<DisposableBase>() as IDisposableStatic;
+export let IDisposableBase = compose() as IDisposableStatic;

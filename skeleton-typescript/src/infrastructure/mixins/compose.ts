@@ -1,7 +1,3 @@
-import {IConfiguration} from "./configuration/iConfiguration";
-import {IComposable} from "./composable/iComposable";
-import {IDependency} from "./dependency/iDependency";
-import {Activatable, isActivatable} from "./activatable/activatable";
 /**
  //  * Create a constructor function for a class implementing the given mixins.
  //  *
@@ -9,41 +5,14 @@ import {Activatable, isActivatable} from "./activatable/activatable";
  //  *               to the constructor of the composed object
  //  * @returns a composable constructor function
  //  */
-export function getImplementationBase<T extends IComposable<IDependency<T>, IConfiguration<T>>>()
-  : (dependencies: IDependency<T>, configuration: IConfiguration<T>) => any {
+export function compose(...mixins: Array<Function>): (dependencies: any, configuration: any) => any {
 
-  // our constructor function that will be called every time a new composed object is created
-  var BaseConstructor = function (dependencies: IDependency<T>, configuration: IConfiguration<T>) {
-
-    if (undefined === dependencies) { dependencies = Object.create(Object); }
-    if (undefined === configuration) { configuration = Object.create(Object); }
-
-    extend(this, dependencies);
-    extend(this, configuration);
-  };
-
-  return BaseConstructor;
-}
-
-
-
-
-
-/**
- //  * Create a constructor function for a class implementing the given mixins.
- //  *
- //  * @param mixins array of classes to be mixed together. The constructor of those classes will receive the options given
- //  *               to the constructor of the composed object
- //  * @returns a composable constructor function
- //  */
-export function getImplementationComposition(...mixins: Array<Function>): (dependencies: any, configuration: any) => any {
-  
   // our constructor function that will be called every time a new composed object is created
   var CompositionConstructor = function (dependencies: any, configuration: any) {
 
     if (undefined === dependencies) { dependencies = Object.create(Object); }
     if (undefined === configuration) { configuration = Object.create(Object); }
-    
+
     extend(this, dependencies);
     extend(this, configuration);
 
@@ -53,12 +22,16 @@ export function getImplementationComposition(...mixins: Array<Function>): (depen
     }, this);
 
     if (
-      isActivatable(this as Object | Activatable)
-      && this.activateAfterComposition
+      (true === (this as any).activateAfterComposition)
+      && (undefined !== (this as any).activate)
     ) {
-      this.activate();
+      (this as any).activate();
     }
   };
+  // todo: no we dont, because this IS the concrete class implementation instance within the compositionConstructor.
+  // todo: Urgent! we need to be passing our concrete class implementation instance into compose in order for it to be extended
+  
+  // todo: When we extend a class and get a method conflict, we want to check if the method exists on the base class
 
   // add all mixins properties and methods to the constructor prototype for all
   // created objects to have them
@@ -68,6 +41,75 @@ export function getImplementationComposition(...mixins: Array<Function>): (depen
 
   return CompositionConstructor;
 }
+
+
+
+// /**
+//  //  * Create a constructor function for a class implementing the given mixins.
+//  //  *
+//  //  * @param mixins array of classes to be mixed together. The constructor of those classes will receive the options given
+//  //  *               to the constructor of the composed object
+//  //  * @returns a composable constructor function
+//  //  */
+// export function getImplementationBase<T extends IComposable<IDependency<T>, IConfiguration<T>>>()
+//   : (dependencies: IDependency<T>, configuration: IConfiguration<T>) => any {
+//
+//   // our constructor function that will be called every time a new composed object is created
+//   var BaseConstructor = function (dependencies: IDependency<T>, configuration: IConfiguration<T>) {
+//
+//     if (undefined === dependencies) { dependencies = Object.create(Object); }
+//     if (undefined === configuration) { configuration = Object.create(Object); }
+//
+//     extend(this, dependencies);
+//     extend(this, configuration);
+//   };
+//
+//   return BaseConstructor;
+// }
+//
+//
+//
+//
+//
+// /**
+//  //  * Create a constructor function for a class implementing the given mixins.
+//  //  *
+//  //  * @param mixins array of classes to be mixed together. The constructor of those classes will receive the options given
+//  //  *               to the constructor of the composed object
+//  //  * @returns a composable constructor function
+//  //  */
+// export function getImplementationComposition(...mixins: Array<Function>): (dependencies: any, configuration: any) => any {
+//
+//   // our constructor function that will be called every time a new composed object is created
+//   var CompositionConstructor = function (dependencies: any, configuration: any) {
+//
+//     if (undefined === dependencies) { dependencies = Object.create(Object); }
+//     if (undefined === configuration) { configuration = Object.create(Object); }
+//
+//     extend(this, dependencies);
+//     extend(this, configuration);
+//
+//     // call the constructor function of all the mixins
+//     mixins.forEach(function (mixin) {
+//       mixin.call(this, dependencies, configuration);
+//     }, this);
+//
+//     if (
+//       isActivatable(this as Object | Activatable)
+//       && this.activateAfterComposition
+//     ) {
+//       this.activate();
+//     }
+//   };
+//
+//   // add all mixins properties and methods to the constructor prototype for all
+//   // created objects to have them
+//   mixins.forEach(function (mixin) {
+//     extend(CompositionConstructor.prototype, mixin.prototype);
+//   });
+//
+//   return CompositionConstructor;
+// }
 
 
 

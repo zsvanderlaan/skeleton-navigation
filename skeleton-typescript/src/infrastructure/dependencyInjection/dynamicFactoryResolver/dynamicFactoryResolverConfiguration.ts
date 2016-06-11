@@ -1,4 +1,10 @@
-export class DynamicFactoryResolverConfiguration {
+import {DynamicFactoryResolverBase} from "./dynamicFactoryResolverBase";
+import {Configuration} from "../../mixins/configuration/Configuration";
+import {IDynamicFactoryResolverConfiguration} from "./iDynamicFactoryResolverConfiguration";
 
-  constructor() { }
+export class DynamicFactoryResolverConfiguration extends Configuration<DynamicFactoryResolverBase> implements IDynamicFactoryResolverConfiguration {
+
+  constructor() {
+    super();
+  }
 }

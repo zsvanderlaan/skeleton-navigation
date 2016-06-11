@@ -1,7 +1,7 @@
 import {Activatable} from "../../infrastructure/mixins/activatable/activatable";
 import {EventSubscriber} from "../../infrastructure/mixins/eventSubscriber/eventSubscriber";
 import {EventPublisher} from "../../infrastructure/mixins/eventPublisher/eventPublisher";
-import {getImplementationComposition} from "../../infrastructure/mixins/ImplementationFactory";
+import {compose} from "../../infrastructure/mixins/compose";
 import {ApiFetchServiceBase} from "./apiFetchServiceBase";
 import {IApiFetchServiceDependencies} from "./iApiFetchServiceDependencies";
 import {IApiFetchServiceConfiguration} from "./iApiFetchServiceConfiguration";
@@ -24,7 +24,7 @@ export interface IApiFetchServiceBase extends
   
 }
 
-export let IApiFetchServiceBase = getImplementationComposition(
+export let IApiFetchServiceBase = compose(
   Activatable
   , EventSubscriber
   , EventPublisher

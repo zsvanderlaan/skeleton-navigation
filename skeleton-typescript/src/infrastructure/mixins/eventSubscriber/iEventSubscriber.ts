@@ -1,7 +1,7 @@
-import {IActivatableImplementer} from "../activatable/iActivatable";
+import {IActivatableImplementation} from "../activatable/iActivatable";
 import {IEventHandlerRegistry} from "./iEventHandlerRegistry";
 
-export interface IEventSubscriber extends IActivatableImplementer {
+export interface IEventSubscriber extends IActivatableImplementation {
   subscribeEventHandlers();
   unsubscribeEventHandlers();
 

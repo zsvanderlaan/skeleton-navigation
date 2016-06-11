@@ -1,4 +1,4 @@
-import {getImplementationBase} from "../ImplementationFactory";
+import {compose} from "../compose";
 import {EventPublisherBase} from "./eventPublisherBase";
 import {IEventPublisherDependencies} from "./iEventPublisherDependencies";
 import {IEventPublisherConfiguration} from "./iEventPublisherConfiguration";
@@ -15,4 +15,4 @@ export interface IEventPublisherBase extends
 
 }
 
-export let IEventPublisherBase = getImplementationBase<EventPublisherBase>() as IEventPublisherStatic;
+export let IEventPublisherBase = compose() as IEventPublisherStatic;

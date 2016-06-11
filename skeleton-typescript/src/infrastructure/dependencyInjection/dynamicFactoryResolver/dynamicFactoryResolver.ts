@@ -6,12 +6,15 @@ import {Factory} from "aurelia-dependency-injection";
 import {transient} from "aurelia-dependency-injection";
 import {IDynamicFactoryResolver} from "./iDynamicFactoryResolver";
 
+// todo: &&&& this class needs to match the shape of my mixins.
+// after shape matching consider if its time to build a generator / scaffold
+
 @transient()
 @inject(DynamicFactoryResolverDependencies)
 export class DynamicFactoryResolver extends IDynamicFactoryResolverBase implements IDynamicFactoryResolver {
 
-  constructor(_dependencies: DynamicFactoryResolverDependencies, _configuration: DynamicFactoryResolverConfiguration) {
-    super(_dependencies, _configuration);
+  constructor(dependencies: DynamicFactoryResolverDependencies, configuration: DynamicFactoryResolverConfiguration) {
+    super(dependencies, configuration);
   }
 
   get<T>(key: T, configuration): T {
