@@ -28,13 +28,22 @@ export function compose(...mixins: Array<Function>): (dependencies: any, configu
       (this as any).activate();
     }
   };
-  // todo: no we dont, because this IS the concrete class implementation instance within the compositionConstructor.
-  // todo: Urgent! we need to be passing our concrete class implementation instance into compose in order for it to be extended
-  
-  // todo: When we extend a class and get a method conflict, we want to check if the method exists on the base class
 
-  // add all mixins properties and methods to the constructor prototype for all
-  // created objects to have them
+
+  // add all mixins properties and methods to the constructor prototype for all created objects to have them
+
+  // todo: It would be helpful to have some designator for:
+  // when a method should be concatenated to an existing method array and iterated when super.method() is invoked.
+  // when a method should skip because there is an existing method
+  // when a method should replace the existing method
+  // Examples:
+
+  // Two different mixins both implement Activatable. When isActive changes, they should both
+  // invoke their onActivate() behavior.
+
+  // Two mixins both implement a logger. When we invoke the log method, we should only get one logged output.
+  // In this case, we must define a strategy which can be implemented to determine which of the two methods should persist.
+
   mixins.forEach(function (mixin) {
     extend(CompositionConstructor.prototype, mixin.prototype);
   });
