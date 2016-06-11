@@ -7,7 +7,7 @@ import {IEventSubscriber} from "./iEventSubscriber";
 
 @inject(EventSubscriberDependencies)
 export class EventSubscriber extends IEventSubscriberBase implements IEventSubscriber {
-
+  
   constructor(dependencies: EventSubscriberDependencies, configuration: EventSubscriberConfiguration) {
     super(dependencies, configuration);
   }

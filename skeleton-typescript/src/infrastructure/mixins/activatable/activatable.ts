@@ -33,3 +33,10 @@ export class Activatable extends IActivatableBase implements IActivatable {
     }
   }
 }
+
+export function isActivatable<T>(instanceOfUnknownType: T | Activatable): instanceOfUnknownType is Activatable {
+  return (
+    ((<Activatable>instanceOfUnknownType).activateAfterComposition !== undefined)
+    && ((<Activatable>instanceOfUnknownType).activate !== undefined)
+  );
+}

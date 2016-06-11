@@ -1,18 +1,18 @@
-import {ActivatableDependencies} from "./activatableDependencies";
-import {ActivatableConfiguration} from "./activatableConfiguration";
-import {compose} from "../Compose";
-import {IComposable} from "../composable/iComposable";
+import {ActivatableBase} from "./activatableBase";
+import {getImplementationBase} from "../ImplementationFactory";
+import {IActivatableConfiguration} from "./iActivatableConfiguration";
+import {IActivatableDependencies} from "./iActivatableDependencies";
 
-export interface IActivatableBaseStatic extends IComposable<ActivatableDependencies, ActivatableConfiguration> {
-  new(dependencies: ActivatableDependencies, configuration: ActivatableConfiguration): IActivatableBase;
-  (dependencies: ActivatableDependencies, configuration: ActivatableConfiguration): void;
+export interface IActivatableBaseStatic {
+  new(dependencies: IActivatableDependencies, configuration: IActivatableConfiguration): IActivatableBase;
+  (dependencies: IActivatableDependencies, configuration: IActivatableConfiguration): void;
 }
 
-export interface IActivatableBase extends ActivatableDependencies, ActivatableConfiguration {
+export interface IActivatableBase extends
+  ActivatableBase
+  , IActivatableDependencies
+  , IActivatableConfiguration {
 
 }
 
-export let IActivatableBase = compose<IActivatableBaseStatic>(
-  ActivatableConfiguration
-  , ActivatableDependencies
-) as IActivatableBaseStatic;
+export let IActivatableBase = getImplementationBase<ActivatableBase>() as IActivatableBaseStatic;

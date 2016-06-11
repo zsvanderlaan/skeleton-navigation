@@ -39,7 +39,7 @@ export class ApiFetchService extends IApiFetchServiceBase implements IApiFetchSe
   }
 
   protected fetch() {
-    this._http.fetch(this.apiRoute, {
+    this.http.fetch(this.apiRoute, {
         'credentials': 'same-origin',
         'method': this.requestMethod,
         'headers': {

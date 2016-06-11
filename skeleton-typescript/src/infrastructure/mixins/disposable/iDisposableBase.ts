@@ -1,14 +1,18 @@
-import {DisposableDependencies} from "./disposableDependencies";
-import {DisposableConfiguration} from "./disposableConfiguration";
-import {compose} from "../Compose";
+import {getImplementationBase} from "../ImplementationFactory";
+import {DisposableBase} from "./disposableBase";
+import {IDisposableConfiguration} from "./iDisposableConfiguration";
+import {IDisposableDependencies} from "./iDisposableDependencies";
 
 export interface IDisposableStatic {
-  new(dependencies: DisposableDependencies, configuration: DisposableConfiguration): IDisposableBase;
-  (dependencies: DisposableDependencies, configuration: DisposableConfiguration): void;
+  new(dependencies: IDisposableDependencies, configuration: IDisposableConfiguration): IDisposableBase;
+  (dependencies: IDisposableDependencies, configuration: IDisposableConfiguration): void;
 }
 
-export interface IDisposableBase extends DisposableConfiguration, DisposableDependencies {
+export interface IDisposableBase extends
+  DisposableBase
+  , IDisposableDependencies
+  , IDisposableConfiguration {
   
 }
 
-export let IDisposableBase = compose(DisposableConfiguration, DisposableDependencies) as IDisposableStatic;
+export let IDisposableBase = getImplementationBase<DisposableBase>() as IDisposableStatic;

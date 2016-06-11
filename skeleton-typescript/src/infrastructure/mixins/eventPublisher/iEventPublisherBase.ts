@@ -1,14 +1,18 @@
-import {EventPublisherDependencies} from "./eventPublisherDependencies";
-import {EventPublisherConfiguration} from "./eventPublisherConfiguration";
-import {compose} from "../Compose";
+import {getImplementationBase} from "../ImplementationFactory";
+import {EventPublisherBase} from "./eventPublisherBase";
+import {IEventPublisherDependencies} from "./iEventPublisherDependencies";
+import {IEventPublisherConfiguration} from "./iEventPublisherConfiguration";
 
 export interface IEventPublisherStatic {
-  new(dependencies: EventPublisherDependencies, configuration: EventPublisherConfiguration): IEventPublisherBase;
-  (dependencies: EventPublisherDependencies, configuration: EventPublisherConfiguration): void;
+  new(dependencies: IEventPublisherDependencies, configuration: IEventPublisherConfiguration): IEventPublisherBase;
+  (dependencies: IEventPublisherDependencies, configuration: IEventPublisherConfiguration): void;
 }
 
-export interface IEventPublisherBase extends EventPublisherConfiguration, EventPublisherDependencies {
-  
+export interface IEventPublisherBase extends
+  EventPublisherBase
+  , IEventPublisherDependencies
+  , IEventPublisherConfiguration {
+
 }
 
-export let IEventPublisherBase = compose(EventPublisherConfiguration, EventPublisherDependencies) as IEventPublisherStatic;
+export let IEventPublisherBase = getImplementationBase<EventPublisherBase>() as IEventPublisherStatic;

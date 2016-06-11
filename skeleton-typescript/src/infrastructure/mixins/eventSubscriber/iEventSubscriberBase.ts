@@ -1,27 +1,29 @@
-import {EventSubscriberDependencies} from "./eventSubscriberDependencies";
-import {EventSubscriberConfiguration} from "./eventSubscriberConfiguration";
 import {Disposable} from "../disposable/disposable";
 import {Activatable} from "../activatable/activatable";
-import {compose} from "../Compose";
+import {IEventSubscriberDependencies} from "./iEventSubscriberDependencies";
+import {IActivatable} from "../activatable/iActivatable";
+import {IDisposable} from "../disposable/iDisposable";
+import {getImplementationComposition} from "../ImplementationFactory";
+import {IEventSubscriberConfiguration} from "./iEventSubscriberConfiguration";
+import {EventSubscriberBase} from "./eventSubscriberBase";
 
 
 export interface IEventSubscriberStatic {
-  new(dependencies: EventSubscriberDependencies, configuration: EventSubscriberConfiguration): IEventSubscriberBase;
-  (dependencies: EventSubscriberDependencies, configuration: EventSubscriberConfiguration): void;
+  new(dependencies: IEventSubscriberDependencies, configuration: IEventSubscriberConfiguration): IEventSubscriberBase;
+  (dependencies: IEventSubscriberDependencies, configuration: IEventSubscriberConfiguration): void;
 }
 
 
 export interface IEventSubscriberBase extends
+  EventSubscriberBase
+  , IEventSubscriberDependencies
+  , IEventSubscriberConfiguration
+  , IActivatable
+  , IDisposable {
+}
+
+
+export let IEventSubscriberBase = getImplementationComposition(
   Activatable
   , Disposable
-  , EventSubscriberConfiguration
-  , EventSubscriberDependencies { }
-
-
-export let IEventSubscriberBase = compose(
-  Activatable
-  , Disposable
-  , EventSubscriberConfiguration
-  , EventSubscriberDependencies
-
 ) as IEventSubscriberStatic;

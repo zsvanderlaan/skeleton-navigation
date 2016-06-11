@@ -1,4 +1,12 @@
-export class ApiFetchServiceConfiguration {
+import {Configuration} from "../../infrastructure/mixins/configuration/Configuration";
+import {ApiFetchService} from "./apiFetchService";
+import {IApiFetchServiceConfiguration} from "./iApiFetchServiceConfiguration";
+
+export class ApiFetchServiceConfiguration extends Configuration<ApiFetchService> implements IApiFetchServiceConfiguration  {
+
+  activateAfterComposition:boolean = true;
+  subscribeOnActivation:boolean = true;
+  unsubscribeOnDeactivation:boolean = true;
 
   public requestMethod: string = 'GET';
 
@@ -14,6 +22,6 @@ export class ApiFetchServiceConfiguration {
   constructor(
     public responseType: Function | string
   ) {
-
+    super();
   }
 }

@@ -1,6 +1,6 @@
 import {DynamicFactoryResolverDependencies} from "./dynamicFactoryResolverDependencies";
 import {DynamicFactoryResolverConfiguration} from "./dynamicFactoryResolverConfiguration";
-import {compose} from "../../mixins/Compose";
+import {getImplementationComposition} from "../../mixins/ImplementationFactory";
 
 export interface IDynamicFactoryResolverStatic {
   new(_dependencies: DynamicFactoryResolverDependencies, _configuration: DynamicFactoryResolverConfiguration): IDynamicFactoryResolverBase;
@@ -11,4 +11,4 @@ export interface IDynamicFactoryResolverBase extends DynamicFactoryResolverConfi
   
 }
 
-export let IDynamicFactoryResolverBase = compose(DynamicFactoryResolverConfiguration, DynamicFactoryResolverDependencies) as IDynamicFactoryResolverStatic;
+export let IDynamicFactoryResolverBase = getImplementationComposition(DynamicFactoryResolverConfiguration, DynamicFactoryResolverDependencies) as IDynamicFactoryResolverStatic;

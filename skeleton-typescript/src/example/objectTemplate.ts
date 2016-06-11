@@ -1,6 +1,6 @@
 import {inject} from "aurelia-dependency-injection";
 import {autoinject} from "aurelia-dependency-injection";
-import {compose} from "../infrastructure/mixins/Compose";
+import {getImplementationComposition} from "../infrastructure/mixins/ImplementationFactory";
 
 // Configuration classes must not contain dependencies
 // Because of this, configuration classes are the only classes you may use new() with
@@ -35,7 +35,7 @@ export interface IBaseClass extends
   (_dependencies: ClassDependencies, _configuration: ClassConfiguration): void;
 }
 
-export let IBaseClass = compose(
+export let IBaseClass = getImplementationComposition(
   ClassConfiguration
   , ClassDependencies
 ) as IBaseClass;

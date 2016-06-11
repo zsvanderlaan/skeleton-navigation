@@ -1,11 +1,13 @@
 import {autoinject} from "aurelia-dependency-injection";
+import {Dependency} from "../dependency/Dependency";
+import {DisposableBase} from "./disposableBase";
+import {IDisposableDependencies} from "./iDisposableDependencies";
 
 @autoinject()
-export class DisposableDependencies {
+export class DisposableDependencies extends Dependency<DisposableBase> implements IDisposableDependencies {
 
   constructor(
-    // todo: improve compose function so that this throws a compile error in EventSubscriber
-    // this is because EventSubscriberDependencies is not a superset of the shape { foo: string }
-    public foo: string
-  ) { }
+  ) {
+    super();
+  }
 }
